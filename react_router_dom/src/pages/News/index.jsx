@@ -1,28 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPosts } from '../../store/features/postSlice';
 import { Container } from 'react-bootstrap';
-import { getPosts } from '../../services/getPosts';
 import { CardPost } from './components/CardPost';
 
 
 
 
 export function News() {
-  const [news, setNews] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const posts = useSelector(state => state.posts.posts);
+  const dispatch = useDispatch();
+
 
 
 
   useEffect(() => {
-    setIsLoading(true);
-    getPosts().then(body => setNews(body));
-    setIsLoading(false)
-  }, [])
+    dispatch(fetchPosts());
+  }, [dispatch])
   
   return (
     <main>
         <Container className='d-flex flex-wrap gap-3'>
-        {isLoading && <h1>Loading...</h1>}
-        {Array.isArray(news) && news.map(post => <CardPost key={post.id} {...post} />)}
+        {Array.isArray(posts) && posts.map(post => <CardPost key={post.id} data={post} />)}
         </Container>
     </main>
   )

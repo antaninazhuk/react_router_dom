@@ -1,19 +1,21 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { removePost } from '../../../store/features/postSlice';
 import { Card as PostCard} from 'react-bootstrap';
 
-export function CardPost(props) {
-    /* eslint-disable */
-  const { title, body, id } = props;
-    /* eslint-enable */
+/* eslint-disable */
+export function CardPost({data}) {
+  const dispatch = useDispatch();
+  const { title, body, id} = data;
+/* eslint-enable */
   return (
     <PostCard style={{ width: '18rem' }}>    
     <PostCard.Body style={{ display: 'flex', flexDirection: 'column' }}>
       <PostCard.Title>{title}</PostCard.Title>
       <PostCard.Text style={{ flex: 1}}>
-        {body}
+       {body}       
       </PostCard.Text>
-      <Link to={`/posts/${id}`} variant="primary" style={{ width: '40%', border: 'none'}}>Open</Link>
+      <button onClick={() => dispatch(removePost(id))}>Delete</button>
     </PostCard.Body> 
     </PostCard>
   );
